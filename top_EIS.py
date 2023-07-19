@@ -38,4 +38,6 @@ xem.SetWireInValue(t_scan_clk) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HA
 f_scan_real = 12500000/(21 * t_scan_clk)
 print("scan rate is set as {}\n".format(f_scan_real)) #%  //  Read the whole thing out - datalength = 21  //
 
-pulsevals = 5
+pulsevals = [5]
+for i in range(1,len(pulsevals) + 1):
+    t_pulse_tdc = 
