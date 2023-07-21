@@ -1,6 +1,7 @@
 from FPGA_Config import *
 import datetime
 import math
+from test_EIS_scan_chain import *
 
 #Connect and proram FPGA
 array_returned = FPGA_Config(r"C:\Users\Adjain\Documents\MATLAB\EIS_v1p1\EIS_V1p1\top_eis.bit") 
@@ -28,19 +29,19 @@ no_col_readout = '0000' #'0000' to '1111' readout # of columns "no_col_readout+1
 #% set ref clk frequency
 f_ref_clk = 10000000 #unit: Hz, max: 100MHz
 t_ref_clk = 50000000/f_ref_clk #f_clk = 100M/2/data_hr_sw
-xem.SetWireInValue(t_ref_clk) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HAS 2 MORE ARGUMENTS
+xem.SetWireInValue(0x04, t_ref_clk, 0xffffffff) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HAS 2 MORE ARGUMENTS
 
 #% set scan clk frequency
 f_scan_clk = 1000000 # unit: Hz, max: 10MHz
 t_scan_clk = math.floor(12500000/f_scan_clk) # f_clk = 100M/2/data_hr_sw
-xem.SetWireInValue(t_scan_clk) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HAS 2 MORE ARGUMENTS
+xem.SetWireInValue(0x02, t_scan_clk, 0xffffffff) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HAS 2 MORE ARGUMENTS
 
 f_scan_real = 12500000/(21 * t_scan_clk)
 print("scan rate is set as {}\n".format(f_scan_real)) #%  //  Read the whole thing out - datalength = 21  //
 
 pulsevals = 5
 t_pulse_tdc = pulsevals
-xem.SetWireInValue(t_pulse_tdc) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HAS 2 MORE ARGUMENTS
+xem.SetWireInValue(0x03, t_pulse_tdc, 0xffffffff) #NOT SURE IF THIS IS RIGHT, THE MATLAB VERSION HAS 2 MORE ARGUMENTS
 xem.UpdateWireIns()
 
 #% chip mode
@@ -48,3 +49,4 @@ xem.UpdateWireIns()
 #  31: SC_clk_enb
 #  30: SC_data_enb
 #  29: test scan chain, '1': test scan chain, '0': normal operation
+test_EIS_scan_chain(test_scan_in, load_source, en_clk_c, ref_sel, ref_sel_ext, rst_pd, trimrf0, trimrf1, no_col_readout, xem)
