@@ -4,8 +4,8 @@ import math
 from test_EIS_scan_chain import *
 import time
 #from FPGA_read_teststr_loop import *
-#from FPGA_read_array import *
-from FPGA_read_array2 import *
+from FPGA_read_array import *
+#from FPGA_read_array2 import *
 from FPGA_Destruct import *
 
 #Connect and proram FPGA
@@ -59,8 +59,8 @@ test_EIS_scan_chain(test_scan_in, load_source, en_clk_c, ref_sel, ref_sel_ext, r
 #% read out FIFO from FPGA
 time.sleep(t_measure)
 #FPGA_read_teststr_loop(xem)
-#FPGA_read_array(xem)
-FPGA_read_array2(xem)
+FPGA_read_array(xem)
+#FPGA_read_array2(xem)
 
 #% Destruct FPGA
 FPGA_Destruct(xptr)
