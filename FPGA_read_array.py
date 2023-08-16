@@ -12,7 +12,7 @@ def FPGA_read_array(xem):
     test_len = 2**10
     no_col = 16
 
-    data_transient = [] #------> 4 dimensions --> 19 X no_col X test_len X 2
+    data_transient = [] #------> 4 dimensions --> 20 X no_col X test_len X 2
     temp_array8 = [0, 0]
     temp_array9 = []
     for i in range(1, test_len + 1):
@@ -20,7 +20,7 @@ def FPGA_read_array(xem):
     temp_array10 = []
     for i in range(1, no_col + 1):
         temp_array10.append(temp_array9)
-    for i in range(1, 20):
+    for i in range(1, 21):
         data_transient.append(temp_array10)
 
     row16 = [] #A row of 16 zeroes
@@ -31,7 +31,7 @@ def FPGA_read_array(xem):
         twentyRowsof16.append(row16)
     data_transient.append(twentyRowsof16)
     data_transient.append(twentyRowsof16)
-    Color = ['k','b','r','g','y','c','m',[0.87 0.49 0],[0 0.75 0.75],[0 0.5 0],[0.75 0.75 0],[0.75 0 0.75],[0.5 0.5 0.5 ],[1 0.6 0.78],[0.6 0.2 0],[.8 .2 .6]]
+    Color = ['k','b','r','g','y','c','m',[0.87, 0.49, 0],[0, 0.75, 0.75],[0, 0.5, 0],[0.75, 0.75, 0],[0.75, 0, 0.75],[0.5, 0.5, 0.5],[1, 0.6, 0.78],[0.6, 0.2, 0],[.8, .2, .6]]
     
     data_pipeout = []
     temp_array = [] #This is going to a 4*data_points long 1D array full of zeroes, it will be appended to data_pipeout 20 times
@@ -167,12 +167,13 @@ def FPGA_read_array(xem):
 
         data_out_pixel = [] #Contains no_col rows, each containing length_data/no_col 0s
         temp_array7 = [] #Contains length_data/no_col 0s
-        for i in range(1, (length_data/no_col) + 1):
+        for i in range(1, (length_data // no_col) + 1):
             temp_array7.append(0)
         for i in range(1, no_col + 1):
             data_out_pixel.append(temp_array7)
 
-        for j in range(17, 20):
+        #for j in range(17, 20):
+        for j in range(1, 21): #In MATLAB, it was 
             #temp_array3 = mod(double(data_pipeout(j,2:4:end)),2^6)*2^8
             temp_array3 = []
             for i in range(2, (4*data_points) + 1, 4):
@@ -195,10 +196,10 @@ def FPGA_read_array(xem):
                 data_out_truncated[j - 1][i - 1] = data_out[j - 1][i - 1]
             
             for m in range(1, no_col + 1):
-                for i in range(1, (length_data/no_col) + 1):
+                for i in range(1, (length_data // no_col) + 1):
                     data_out_pixel[m - 1][i - 1] = data_out_truncated[j - 1][(m - 1) + ((i - 1) * no_col)]
                 #data_transient (j,m,k,1)= cnt_diff(data_out_pixel (m ,:))/no_col
-                data_transient[j - 1][m - 1][k - 1][0] = cnt_diff(data_out_pixel[m - 1], length_data/no_col) / no_col
+                data_transient[j - 1][m - 1][k - 1][0] = cnt_diff(data_out_pixel[m - 1], length_data // no_col) / no_col
                 if k == 1:
                     data_transient[j - 1][m - 1][k - 1][1] = 0
                 elif k > 1:
