@@ -2,6 +2,7 @@ import datetime
 from ok import *
 import time
 from cnt_diff import *
+#from createHeatmap import *
 
 def FPGA_read_array(xem):
     print("reading data from FPGA\n")
@@ -146,11 +147,12 @@ def FPGA_read_array(xem):
         time.sleep(0.1)
 
         data_out = []
-        temp_array2 = [] #This is going to a data_points long 1D array full of zeroes, it will be appended to data_out and data_out2 16 times
-        for i in range(1, data_points + 1):
-            temp_array2.append(0)
-        for i in range(1, 17):
-            data_out.append(temp_array2)
+        #BELOW code was commented out, no longer (after commenting out) identical to MATLAB
+        #temp_array2 = [] #This is going to a data_points long 1D array full of zeroes, it will be appended to data_out and data_out2 16 times
+        #for i in range(1, data_points + 1):
+            #temp_array2.append(0)
+        #for i in range(1, 17):
+            #data_out.append(temp_array2)
         
         toc = time.time()
         timeinterval = toc - tic
@@ -158,11 +160,11 @@ def FPGA_read_array(xem):
         #length_data = no_col*fix(length(data_out(j,:))/no_col)
         length_data = no_col * (data_points // no_col)
 
-        data_out_truncated = [] #Contains 19 temp_array6s
+        data_out_truncated = [] #Contains 20 temp_array6s
         temp_array6 = [] #Contains length_data zeroes
         for i in range(1, length_data + 1):
             temp_array6.append(0)
-        for i in range(1, 20):
+        for i in range(1, 21):
             data_out_truncated.append(temp_array6)
 
         data_out_pixel = [] #Contains no_col rows, each containing length_data/no_col 0s
@@ -206,6 +208,7 @@ def FPGA_read_array(xem):
                     data_transient[j - 1][m - 1][k - 1][1] = data_transient[j - 1][m - 1][k - 2][1] + timeinterval
                 
                 #ALL CODE FOR PLOTTING WAS SKIPPED BY ME
+    
     time_run = "_" + str(datetime.datetime.now().year) + "-" + str(datetime.datetime.now().month) + "-" + str(datetime.datetime.now().day) + "_" + str(datetime.datetime.now().hour) + str(datetime.datetime.now().month) + str(datetime.datetime.now().second)
     File_Name = "TDC_array_transient" + time_run + ".csv"
 
@@ -222,10 +225,16 @@ def FPGA_read_array(xem):
             toWrite = "\n"
             for i in range(1, test_len + 1):
                 toWrite = str(data_transient[x - 1][y - 1][i - 1][0]) + toWrite
+                #print(str(data_transient[x - 1][y - 1][i - 1][0]) + " || ")
             myfile.write(toWrite)
+            #print("\n")
             toWrite = "\n"
             for i in range(1, test_len + 1):
                 toWrite = str(data_transient[x - 1][y - 1][i - 1][1]) + toWrite
+                #print(str(data_transient[x - 1][y - 1][i - 1][1]) + " || ")
             myfile.write(toWrite)
+            #print("\n")
     
-    myfile.close()
+    #createHeatmap(data_transient, test_len, 20, no_col)
+
+    #myfile.close()
