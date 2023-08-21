@@ -9,7 +9,7 @@ from FPGA_read_array import *
 from FPGA_Destruct import *
 
 #Connect and proram FPGA
-array_returned = FPGA_Config(r"C:\Users\Tianlei\Desktop\HallLabPythonAaryan\top_eis.bit") 
+array_returned = FPGA_Config(r"C:\Users\Adjain\Desktop\HallLabAaryan\HallLab-main\top_eis.bit") 
 mlist = array_returned[0]
 snlist = array_returned[1]
 xem = array_returned[2]
