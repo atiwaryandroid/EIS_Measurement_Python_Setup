@@ -8,4 +8,4 @@ def createHeatmap(data_transient, test_len, rows, cols):
             for k in range(1, cols + 1):
                 newRow.append(data_transient[j - 1][k - 1][i - 1][0])
             target.append(newRow)
-        newMap(target)
+        newMap(target, i)
