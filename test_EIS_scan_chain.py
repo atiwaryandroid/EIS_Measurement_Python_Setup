@@ -65,12 +65,15 @@ def test_EIS_scan_chain(test_scan_in, load_source, en_clk_c, ref_sel, ref_sel_ex
         # be careful the reversed order of scan-in and scan-out
         #s_in = 0b 0000 0000 0000 0000 0100 1111 0100 1111
         s_in = [1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] #converted manually to 32 wide list
-        temp = data_out #emporary variable used to create s_out
+        temp = int(data_out) #emporary variable used to create s_out
         tempLen = 0 #Used to keep track of length of s_out
         s_out = [] # data from counter and comparator
         while temp > 0:
+            #Debug
+            #print(str(temp) + '-' + str(temp % 2) + '\n')
+            #End of debug
             s_out.append(temp % 2)
-            temp = temp / 2
+            temp = temp // 2
             tempLen = tempLen + 1
             if(tempLen == 32):
                 break
@@ -78,6 +81,12 @@ def test_EIS_scan_chain(test_scan_in, load_source, en_clk_c, ref_sel, ref_sel_ex
             s_out.append(0)
             tempLen = tempLen + 1
         #At the end of these 2 while loops, s_out is a 32 bit binary representation of data_out
+        #Debug
+        #for i in range(1, 22):
+            #a = s_in[21 - i]
+            #b = s_out[i - 1]
+            #print(str(a) + '-' + str(b) + '\n')
+        #End of Debug
         error = 0
         for i in range(1, 22):
             if s_in[21 - i] != s_out[i - 1]:

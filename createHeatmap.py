@@ -1,6 +1,8 @@
 from newMap import *
+import matplotlib.pyplot as plt
 
 def createHeatmap(data_transient, test_len, rows, cols):
+    plt.colorbar()
     for i in range(1, test_len + 1):
         target = [] #2D heatmap will be generated for this matrix
         for j in range(1, rows + 1):

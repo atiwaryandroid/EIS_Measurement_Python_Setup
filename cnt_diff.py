@@ -1,6 +1,13 @@
 import statistics
 
 def cnt_diff(data_in, data_points):
+    #print("cnt_diff called\n")
+    #DEBUG
+    #length = len(data_in)
+    #for i in range(0, length):
+        #print("Column "+ str(i + 1) + ": " + str(data_in[i]))
+    #print("\n")
+    #DEBUG
     #print("data_points:{}\n".format(data_points))
     #for i in range(0, data_points):
         #print("value = {}\n".format(data_in[i]))
@@ -14,16 +21,19 @@ def cnt_diff(data_in, data_points):
     indLen = 0
     #print("data_in_med:{}\n".format(data_in_med))
     if data_in_med > 2:
+        #print("data_in_med > 2\n")
         for i in range(0, data_points - 1):
             if data_in_diff[i] < 1.5 * data_in_med and data_in_diff[i] > 0.5 * data_in_med:
                 ind.append(i)
                 indLen = indLen + 1
     if data_in_med <= 1:
+        #print("data_in_med <= 1\n")
         for i in range(0, data_points - 1):
             if data_in_diff[i] <= 2 * data_in_med and data_in_diff[i] >= 0:
                 ind.append(i)
                 indLen = indLen + 1
     if data_in_med <= 2 and data_in_med > 1:
+        #print("data_in_med <= 2 && data_in_med > 1\n")
         for i in range(0, data_points - 1):
             if data_in_diff[i] <= 2 * data_in_med and data_in_diff[i] >= 0:
                 ind.append(i)

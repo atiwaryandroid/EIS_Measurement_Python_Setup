@@ -2,7 +2,10 @@ import datetime
 from ok import *
 import time
 from cnt_diff import *
-#from createHeatmap import *
+from createHeatmap import *
+from pipeouttoout import *
+from debugPrint import *
+from readIntoDataPipeout import *
 
 def FPGA_read_array(xem):
     print("reading data from FPGA\n")
@@ -10,7 +13,8 @@ def FPGA_read_array(xem):
     time_run = "_" + str(datetime.datetime.now().year) + "-" + str(datetime.datetime.now().month) + "-" + str(datetime.datetime.now().day) + "_" + str(datetime.datetime.now().hour) + str(datetime.datetime.now().month) + str(datetime.datetime.now().second)
     data_points = 2**12
     data_read_leng = 2**10
-    test_len = 2**10
+    #test_len = 2**10
+    test_len = 2**3
     no_col = 16
 
     data_transient = [] #------> 4 dimensions --> 20 X no_col X test_len X 2
@@ -35,115 +39,32 @@ def FPGA_read_array(xem):
     Color = ['k','b','r','g','y','c','m',[0.87, 0.49, 0],[0, 0.75, 0.75],[0, 0.5, 0],[0.75, 0.75, 0],[0.75, 0, 0.75],[0.5, 0.5, 0.5],[1, 0.6, 0.78],[0.6, 0.2, 0],[.8, .2, .6]]
     
     data_pipeout = []
-    temp_array = [] #This is going to a 4*data_points long 1D array full of zeroes, it will be appended to data_pipeout 20 times
+    data_pipeout_row = [] #This is going to a 4*data_points long 1D array full of zeroes, it will be appended to data_pipeout 20 times
     for i in range(1, (4 * data_points) + 1):
-        temp_array.append(0)
+        data_pipeout_row.append(0)
     for i in range(1, 21): #needs to iterate 20 times
-        data_pipeout.append(temp_array)
+        data_pipeout.append(data_pipeout_row)
 
     for k in range(1, test_len + 1):
         print("Run #{}\n".format(k))
+        
+        for p in range(1, 20):
+            print("Printing data_pipeout_row just before calling readFromBlockPipeout")
+            debugPrint(data_pipeout_row, 4 * data_points)
+            readIntoDataPipeout(xem, data_points, data_read_leng, data_pipeout_row, 0xa0 + p - 1)
+            print("Printing data_pipeout_row just after calling readFromBlockPipeout")
+            debugPrint(data_pipeout_row, 4 * data_points)
+            for q in range(1, (4 * data_points) + 1):
+                data_pipeout[p - 1][q - 1] = data_pipeout_row[q - 1]
+            print("Printing data_pipeout_row after setting data_pipeout's " + str(p) + "th row to data_pipeout_row")
+            debugPrint(data_pipeout_row, 4 * data_points)
+            print("Printing data_pipeout's " + str(p) + "th row")
+            debugPrint(data_pipeout[p - 1], 4 * data_points)
+            print("Printing data_pipeout's 1th row")
+            debugPrint(data_pipeout[0], 4 * data_points)
+            if(p == 5):
+                time.sleep(120)
 
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa0, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[0][i - 1] = buf[i - 1]
-
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa1, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[1][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa2, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[2][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa3, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[3][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa4, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[4][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa5, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[5][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa6, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[6][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa7, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[7][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa8, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[8][i - 1] = buf[i - 1]
-
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xa9, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[9][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xaa, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[10][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xab, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[11][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xac, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[12][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xad, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[13][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xae, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[14][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xaf, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[15][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xb0, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[16][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xb1, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[17][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xb2, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[18][i - 1] = buf[i - 1]
-        
-        buf = bytearray(4 * data_points)
-        xem.ReadFromBlockPipeOut(0xb3, data_read_leng, buf)
-        for i in range(1, (4 * data_points) + 1):
-            data_pipeout[19][i - 1] = buf[i - 1]
-        
         time.sleep(0.1)
 
         data_out = []
@@ -159,6 +80,7 @@ def FPGA_read_array(xem):
 
         #length_data = no_col*fix(length(data_out(j,:))/no_col)
         length_data = no_col * (data_points // no_col)
+        #print("Length data: " + str(length_data) + " data_points: " + str(data_points) + "\n")
 
         data_out_truncated = [] #Contains 20 temp_array6s
         temp_array6 = [] #Contains length_data zeroes
@@ -174,26 +96,9 @@ def FPGA_read_array(xem):
         for i in range(1, no_col + 1):
             data_out_pixel.append(temp_array7)
 
-        #for j in range(17, 20):
-        for j in range(1, 21): #In MATLAB, it was 
-            #temp_array3 = mod(double(data_pipeout(j,2:4:end)),2^6)*2^8
-            temp_array3 = []
-            for i in range(2, (4*data_points) + 1, 4):
-                ans = float(data_pipeout[j - 1][i - 1]) 
-                temp_array3.append((ans % (2 ** 6)) * 2**8)
-            
-            #temp_array4 = double( data_pipeout(j,1:4:end))
-            temp_array4 = []
-            for i in range(1, (4*data_points) + 1, 4):
-                temp_array4.append(float(data_pipeout[j - 1][i - 1]))
-            
-            #temp_array5 = temp_array4 + temp_array3
-            temp_array5 = []
-            for i in range(1, data_points + 1):
-                temp_array5.append(temp_array4[i - 1] + temp_array3[i - 1])
-            
-            data_out.append(temp_array5)
+        data_out = pipeouttoout(data_pipeout, data_points, 20)
 
+        for j in range(1, 21): 
             for i in range(1, length_data + 1):
                 data_out_truncated[j - 1][i - 1] = data_out[j - 1][i - 1]
             
@@ -235,6 +140,6 @@ def FPGA_read_array(xem):
             myfile.write(toWrite)
             #print("\n")
     
-    #createHeatmap(data_transient, test_len, 20, no_col)
+    createHeatmap(data_transient, test_len, 20, no_col)
 
     #myfile.close()
