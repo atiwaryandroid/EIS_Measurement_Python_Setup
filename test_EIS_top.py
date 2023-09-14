@@ -32,8 +32,8 @@ no_col_readout = '0000' #'0000' to '1111' readout # of columns "no_col_readout+1
 
 #TDC sampling frequency = Fclk/N, N>=21 (limited due to scan chain, it further dcreases when reading out rows
 #% set ref clk frequency
-#f_ref_clk = 10000000 #unit: Hz, max: 100MHz
-#t_ref_clk = 50000000/f_ref_clk #f_clk = 100M/2/data_hr_sw
+f_ref_clk = 10000000 #unit: Hz, max: 100MHz
+t_ref_clk = 50000000/f_ref_clk #f_clk = 100M/2/data_hr_sw
 xem.SetWireInValue(0x04, 0x05) #NOT SURE IF THIS IS RIGHT
 
 #% set scan clk frequency
