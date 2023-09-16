@@ -64,32 +64,32 @@ def FPGA_read_array(xem):
                     #print("i = " + str(i) + " j = " + str(j) + " k = " + str(k) + " l = " + str(l) + " elem = " + str(data_transient[i - 1][j - 1][k - 1][l - 1]))
     #END OF CODE
     
-    time_run = "_" + str(datetime.datetime.now().year) + "-" + str(datetime.datetime.now().month) + "-" + str(datetime.datetime.now().day) + "_" + str(datetime.datetime.now().hour) + str(datetime.datetime.now().month) + str(datetime.datetime.now().second)
-    File_Name = "TDC_array_transient" + time_run + ".csv"
+    #time_run = "_" + str(datetime.datetime.now().year) + "-" + str(datetime.datetime.now().month) + "-" + str(datetime.datetime.now().day) + "_" + str(datetime.datetime.now().hour) + str(datetime.datetime.now().month) + str(datetime.datetime.now().second)
+    #File_Name = "TDC_array_transient" + time_run + ".csv"
 
     #Open in write mode
-    myfile = open(File_Name, "w")
-    myfile.write("Start of file\n")
-    myfile.close()
+    #myfile = open(File_Name, "w")
+    #myfile.write("Start of file\n")
+    #myfile.close()
     #Open in append mode
-    myfile = open(File_Name, "a")
+    #myfile = open(File_Name, "a")
 
     #FORMAT OF THIS OUTPUTFILE MIGHT BE DIFFERENT FROM THAT PRODUCED BY MATLAB FILE
-    for x in range(1, 21):
-        for y in range(1, no_col + 1):
-            toWrite = "\n"
-            for i in range(1, test_len + 1):
-                toWrite = str(data_transient[x - 1][y - 1][i - 1][0]) + toWrite
+    #for x in range(1, 21):
+        #for y in range(1, no_col + 1):
+            #toWrite = "\n"
+            #for i in range(1, test_len + 1):
+                #toWrite = str(data_transient[x - 1][y - 1][i - 1][0]) + toWrite
                 #print(str(data_transient[x - 1][y - 1][i - 1][0]) + " || ")
-            myfile.write(toWrite)
+            #myfile.write(toWrite)
             #print("\n")
-            toWrite = "\n"
-            for i in range(1, test_len + 1):
-                toWrite = str(data_transient[x - 1][y - 1][i - 1][1]) + toWrite
+            #toWrite = "\n"
+            #for i in range(1, test_len + 1):
+                #toWrite = str(data_transient[x - 1][y - 1][i - 1][1]) + toWrite
                 #print(str(data_transient[x - 1][y - 1][i - 1][1]) + " || ")
-            myfile.write(toWrite)
+            #myfile.write(toWrite)
             #print("\n")
     
-    #createHeatmap(data_transient, test_len, 20, no_col)
+    createHeatmap(data_transient, test_len, 20, no_col)
 
-    myfile.close()
+    #myfile.close()

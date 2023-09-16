@@ -1,13 +1,13 @@
-from newMap import *
 import matplotlib.pyplot as plt
 
 def createHeatmap(data_transient, test_len, rows, cols):
-    plt.colorbar()
+    target = [[0 for i in range(cols)] for j in range(rows)] #2D heatmap will be generated test_len times (once for each test)
     for i in range(1, test_len + 1):
-        target = [] #2D heatmap will be generated for this matrix
         for j in range(1, rows + 1):
-            newRow = []
             for k in range(1, cols + 1):
-                newRow.append(data_transient[j - 1][k - 1][i - 1][0])
-            target.append(newRow)
-        newMap(target, i)
+                target[j - 1][k - 1] = data_transient[j - 1][k - 1][i - 1][0]
+        plt.imshow(target)
+        #plt.colorbar()
+        plt.show(block = False)
+        print("just displayed image " + str(i))
+        
