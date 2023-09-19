@@ -1,0 +1,1 @@
+Colorbar fails to update in Heatmap
